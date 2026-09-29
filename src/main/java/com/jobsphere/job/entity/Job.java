@@ -1,12 +1,15 @@
 package com.jobsphere.job.entity;
 
 import com.jobsphere.company.entity.Company;
+import com.jobsphere.job.enums.JobType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,7 +35,8 @@ public class Job {
 
     private Double maxSalary;
 
-    private String jobType;
+    @Enumerated(EnumType.STRING)
+    private JobType jobType;
 
     private String status;
 
@@ -58,7 +62,7 @@ public class Job {
                Integer maxExperience,
                Double minSalary,
                Double maxSalary,
-               String jobType,
+               JobType jobType,
                String status,
                LocalDate applicationDeadline,
                Company company,
@@ -145,11 +149,11 @@ public class Job {
         this.maxSalary = maxSalary;
     }
 
-    public String getJobType() {
+    public JobType getJobType() {
         return jobType;
     }
 
-    public void setJobType(String jobType) {
+    public void setJobType(JobType jobType) {
         this.jobType = jobType;
     }
 

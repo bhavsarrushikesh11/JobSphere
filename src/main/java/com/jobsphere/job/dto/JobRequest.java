@@ -1,5 +1,6 @@
 package com.jobsphere.job.dto;
 
+import com.jobsphere.job.enums.JobType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -35,8 +36,8 @@ public class JobRequest {
     @PositiveOrZero(message = "Maximum salary cannot be negative")
     private Double maxSalary;
 
-    @NotBlank(message = "Job type is required")
-    private String jobType;
+    @NotNull(message = "Job type is required")
+    private JobType jobType;
 
     @NotBlank(message = "Job status is required")
     private String status;
@@ -106,11 +107,11 @@ public class JobRequest {
         this.maxSalary = maxSalary;
     }
 
-    public String getJobType() {
+    public JobType getJobType() {
         return jobType;
     }
 
-    public void setJobType(String jobType) {
+    public void setJobType(JobType jobType) {
         this.jobType = jobType;
     }
 
