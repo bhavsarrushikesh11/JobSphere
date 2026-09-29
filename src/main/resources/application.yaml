@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: JobSphere
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/jobsphere
+    username: postgres
+    password: root123
+
+  jpa:
+    hibernate:
+      ddl-auto: update
