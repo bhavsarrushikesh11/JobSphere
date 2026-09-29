@@ -10,6 +10,8 @@ import com.jobsphere.job.repository.JobRepository;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class JobService {
 
@@ -88,5 +90,76 @@ public class JobService {
                 job.getCreatedAt(),
                 job.getUpdatedAt()
         );
+    }
+
+    public List<JobResponse> getAllJobs() {
+
+        return jobRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    public JobResponse getJobById(Long id) {
+
+        Job job = jobRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Job not found with id: " + id
+                        )
+                );
+
+        return mapToResponse(job);
+    }
+
+    public JobResponse updateJob(Long id, JobRequest request) {
+
+        Job job = jobRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Job not found with id: " + id
+                        )
+                );
+
+        Company company = companyRepository.findById(request.getCompanyId())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Company not found with id: "
+                                        + request.getCompanyId()
+                        )
+                );
+
+        job.setTitle(request.getTitle());
+        job.setDescription(request.getDescription());
+        job.setLocation(request.getLocation());
+
+        job.setMinExperience(request.getMinExperience());
+        job.setMaxExperience(request.getMaxExperience());
+
+        job.setMinSalary(request.getMinSalary());
+        job.setMaxSalary(request.getMaxSalary());
+
+        job.setJobType(request.getJobType());
+        job.setStatus(request.getStatus());
+
+        job.setApplicationDeadline(request.getApplicationDeadline());
+
+        job.setCompany(company);
+
+        Job updatedJob = jobRepository.save(job);
+
+        return mapToResponse(updatedJob);
+    }
+
+    public void deleteJob(Long id) {
+
+        Job job = jobRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Job not found with id: " + id
+                        )
+                );
+
+        jobRepository.delete(job);
     }
 }
