@@ -1,6 +1,8 @@
 package com.jobsphere.job.dto;
 
+import com.jobsphere.job.enums.JobStatus;
 import com.jobsphere.job.enums.JobType;
+import com.jobsphere.validation.ValidJobRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -8,6 +10,7 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
+@ValidJobRequest
 public class JobRequest {
 
     @NotBlank(message = "Job title is required")
@@ -39,8 +42,8 @@ public class JobRequest {
     @NotNull(message = "Job type is required")
     private JobType jobType;
 
-    @NotBlank(message = "Job status is required")
-    private String status;
+    @NotNull(message = "Job status is required")
+    private JobStatus status;
 
     @NotNull(message = "Application deadline is required")
     private LocalDate applicationDeadline;
@@ -115,11 +118,11 @@ public class JobRequest {
         this.jobType = jobType;
     }
 
-    public String getStatus() {
+    public JobStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(JobStatus status) {
         this.status = status;
     }
 

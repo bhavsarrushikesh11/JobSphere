@@ -1,5 +1,6 @@
 package com.jobsphere.job.dto;
 
+import com.jobsphere.job.enums.JobStatus;
 import com.jobsphere.job.enums.JobType;
 
 import java.time.LocalDate;
@@ -19,7 +20,7 @@ public class JobResponse {
     private Double maxSalary;
 
     private JobType jobType;
-    private String status;
+    private JobStatus status;
 
     private LocalDate applicationDeadline;
 
@@ -36,7 +37,7 @@ public class JobResponse {
                        String location, Integer minExperience,
                        Integer maxExperience, Double minSalary,
                        Double maxSalary, JobType jobType,
-                       String status, LocalDate applicationDeadline,
+                       JobStatus status, LocalDate applicationDeadline,
                        Long companyId, String companyName,
                        LocalDateTime createdAt,
                        LocalDateTime updatedAt) {
@@ -103,6 +104,7 @@ public class JobResponse {
     }
 
     public void setMaxExperience(Integer maxExperience) {
+
         this.maxExperience = maxExperience;
     }
 
@@ -130,11 +132,11 @@ public class JobResponse {
         this.jobType = jobType;
     }
 
-    public String getStatus() {
+    public JobStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(JobStatus status) {
         this.status = status;
     }
 

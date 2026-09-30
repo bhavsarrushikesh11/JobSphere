@@ -1,6 +1,7 @@
 package com.jobsphere.job.entity;
 
 import com.jobsphere.company.entity.Company;
+import com.jobsphere.job.enums.JobStatus;
 import com.jobsphere.job.enums.JobType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,7 +39,8 @@ public class Job {
     @Enumerated(EnumType.STRING)
     private JobType jobType;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private JobStatus status;
 
     private LocalDate applicationDeadline;
 
@@ -63,7 +65,7 @@ public class Job {
                Double minSalary,
                Double maxSalary,
                JobType jobType,
-               String status,
+               JobStatus status,
                LocalDate applicationDeadline,
                Company company,
                LocalDateTime createdAt,
@@ -157,11 +159,11 @@ public class Job {
         this.jobType = jobType;
     }
 
-    public String getStatus() {
+    public JobStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(JobStatus status) {
         this.status = status;
     }
 

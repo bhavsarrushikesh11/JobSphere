@@ -1,6 +1,7 @@
 package com.jobsphere.exception;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 public class ErrorResponse {
 
@@ -8,16 +9,35 @@ public class ErrorResponse {
     private int status;
     private String message;
     private String path;
+    private Map<String, String> errors;
 
     public ErrorResponse() {
     }
 
-    public ErrorResponse(LocalDateTime timestamp, int status,
-                         String message, String path) {
+    public ErrorResponse(
+            LocalDateTime timestamp,
+            int status,
+            String message,
+            String path) {
+
         this.timestamp = timestamp;
         this.status = status;
         this.message = message;
         this.path = path;
+    }
+
+    public ErrorResponse(
+            LocalDateTime timestamp,
+            int status,
+            String message,
+            String path,
+            Map<String, String> errors) {
+
+        this.timestamp = timestamp;
+        this.status = status;
+        this.message = message;
+        this.path = path;
+        this.errors = errors;
     }
 
     public LocalDateTime getTimestamp() {
@@ -50,5 +70,13 @@ public class ErrorResponse {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public Map<String, String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(Map<String, String> errors) {
+        this.errors = errors;
     }
 }

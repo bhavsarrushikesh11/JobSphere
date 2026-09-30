@@ -30,23 +30,27 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, Object> handleValidationException(
-            MethodArgumentNotValidException exception) {
+    public ErrorResponse handleValidationException(
+            MethodArgumentNotValidException exception,
+            HttpServletRequest request) {
 
         Map<String, String> errors = new HashMap<>();
 
         exception.getBindingResult()
                 .getFieldErrors()
                 .forEach(error ->
-                        errors.put(error.getField(), error.getDefaultMessage())
+                        errors.put(
+                                error.getField(),
+                                error.getDefaultMessage()
+                        )
                 );
 
-        Map<String, Object> response = new HashMap<>();
-
-        response.put("status", HttpStatus.BAD_REQUEST.value());
-        response.put("message", "Validation failed");
-        response.put("errors", errors);
-
-        return response;
+        return new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Validation failed",
+                request.getRequestURI(),
+                errors
+        );
     }
 }
