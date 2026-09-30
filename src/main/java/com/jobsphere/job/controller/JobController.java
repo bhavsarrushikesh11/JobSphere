@@ -1,8 +1,11 @@
 package com.jobsphere.job.controller;
 
+import com.jobsphere.common.dto.PageResponse;
 import com.jobsphere.job.dto.JobRequest;
 import com.jobsphere.job.dto.JobResponse;
 import com.jobsphere.job.service.JobService;
+
+import org.springframework.data.domain.Pageable;
 
 import jakarta.validation.Valid;
 
@@ -28,9 +31,9 @@ public class JobController {
     }
 
     @GetMapping
-    public List<JobResponse> getAllJobs() {
+    public PageResponse<JobResponse> getAllJobs(Pageable pageable) {
 
-        return jobService.getAllJobs();
+        return jobService.getAllJobs(pageable);
     }
 
     @GetMapping("/{id}")

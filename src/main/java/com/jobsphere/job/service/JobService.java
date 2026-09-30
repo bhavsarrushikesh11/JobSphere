@@ -7,6 +7,10 @@ import com.jobsphere.job.dto.JobRequest;
 import com.jobsphere.job.dto.JobResponse;
 import com.jobsphere.job.entity.Job;
 import com.jobsphere.job.repository.JobRepository;
+import com.jobsphere.common.dto.PageResponse;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import org.springframework.stereotype.Service;
 
@@ -92,12 +96,24 @@ public class JobService {
         );
     }
 
-    public List<JobResponse> getAllJobs() {
+    public PageResponse<JobResponse> getAllJobs(Pageable pageable) {
 
-        return jobRepository.findAll()
+        Page<Job> jobPage = jobRepository.findAll(pageable);
+
+        List<JobResponse> jobs = jobPage.getContent()
                 .stream()
                 .map(this::mapToResponse)
                 .toList();
+
+        return new PageResponse<>(
+                jobs,
+                jobPage.getNumber(),
+                jobPage.getSize(),
+                jobPage.getTotalElements(),
+                jobPage.getTotalPages(),
+                jobPage.isFirst(),
+                jobPage.isLast()
+        );
     }
 
     public JobResponse getJobById(Long id) {
