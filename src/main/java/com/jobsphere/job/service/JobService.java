@@ -3,15 +3,18 @@ package com.jobsphere.job.service;
 import com.jobsphere.company.entity.Company;
 import com.jobsphere.company.repository.CompanyRepository;
 import com.jobsphere.exception.ResourceNotFoundException;
+import com.jobsphere.job.dto.JobFilterRequest;
 import com.jobsphere.job.dto.JobRequest;
 import com.jobsphere.job.dto.JobResponse;
 import com.jobsphere.job.entity.Job;
 import com.jobsphere.job.repository.JobRepository;
 import com.jobsphere.common.dto.PageResponse;
 
+import com.jobsphere.job.specification.JobSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -177,5 +180,57 @@ public class JobService {
                 );
 
         jobRepository.delete(job);
+    }
+
+    public PageResponse<JobResponse> searchJobs(
+            String keyword,
+            Pageable pageable) {
+
+        Page<Job> jobPage =
+                jobRepository.findByTitleContainingIgnoreCase(
+                        keyword,
+                        pageable
+                );
+
+        List<JobResponse> jobs = jobPage.getContent()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+
+        return new PageResponse<>(
+                jobs,
+                jobPage.getNumber(),
+                jobPage.getSize(),
+                jobPage.getTotalElements(),
+                jobPage.getTotalPages(),
+                jobPage.isFirst(),
+                jobPage.isLast()
+        );
+    }
+
+    public PageResponse<JobResponse> filterJobs(
+            JobFilterRequest filter,
+            Pageable pageable) {
+
+        Specification<Job> specification =
+                JobSpecification.buildSpecification(filter);
+
+        Page<Job> jobPage =
+                jobRepository.findAll(specification, pageable);
+
+        List<JobResponse> jobs = jobPage.getContent()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+
+        return new PageResponse<>(
+                jobs,
+                jobPage.getNumber(),
+                jobPage.getSize(),
+                jobPage.getTotalElements(),
+                jobPage.getTotalPages(),
+                jobPage.isFirst(),
+                jobPage.isLast()
+        );
     }
 }

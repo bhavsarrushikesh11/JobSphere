@@ -1,6 +1,7 @@
 package com.jobsphere.job.controller;
 
 import com.jobsphere.common.dto.PageResponse;
+import com.jobsphere.job.dto.JobFilterRequest;
 import com.jobsphere.job.dto.JobRequest;
 import com.jobsphere.job.dto.JobResponse;
 import com.jobsphere.job.service.JobService;
@@ -54,5 +55,21 @@ public class JobController {
     public void deleteJob(@PathVariable Long id) {
 
         jobService.deleteJob(id);
+    }
+
+    @GetMapping("/search")
+    public PageResponse<JobResponse> searchJobs(
+            @RequestParam String keyword,
+            Pageable pageable) {
+
+        return jobService.searchJobs(keyword, pageable);
+    }
+
+    @GetMapping("/filter")
+    public PageResponse<JobResponse> filterJobs(
+            JobFilterRequest filter,
+            Pageable pageable) {
+
+        return jobService.filterJobs(filter, pageable);
     }
 }
