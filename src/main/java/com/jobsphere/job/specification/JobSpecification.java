@@ -6,6 +6,8 @@ import com.jobsphere.job.enums.JobType;
 import org.springframework.data.jpa.domain.Specification;
 import com.jobsphere.job.dto.JobFilterRequest;
 
+import java.time.LocalDate;
+
 public class JobSpecification {
 
     public static Specification<Job> hasLocation(String location) {
@@ -82,6 +84,26 @@ public class JobSpecification {
                 );
     }
 
+    public static Specification<Job> hasDeadlineBefore(
+            LocalDate deadlineBefore) {
+
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.lessThanOrEqualTo(
+                        root.get("applicationDeadline"),
+                        deadlineBefore
+                );
+    }
+
+    public static Specification<Job> hasDeadlineAfter(
+            LocalDate deadlineAfter) {
+
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.greaterThanOrEqualTo(
+                        root.get("applicationDeadline"),
+                        deadlineAfter
+                );
+    }
+
     public static Specification<Job> buildSpecification(
             JobFilterRequest filter) {
 
@@ -147,6 +169,24 @@ public class JobSpecification {
             specification = specification.and(
                     hasMaximumExperience(
                             filter.getMaxExperience()
+                    )
+            );
+        }
+
+        if (filter.getDeadlineBefore() != null) {
+
+            specification = specification.and(
+                    hasDeadlineBefore(
+                            filter.getDeadlineBefore()
+                    )
+            );
+        }
+
+        if (filter.getDeadlineAfter() != null) {
+
+            specification = specification.and(
+                    hasDeadlineAfter(
+                            filter.getDeadlineAfter()
                     )
             );
         }

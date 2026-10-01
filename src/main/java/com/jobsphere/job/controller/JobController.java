@@ -67,7 +67,7 @@ public class JobController {
 
     @GetMapping("/filter")
     public PageResponse<JobResponse> filterJobs(
-            JobFilterRequest filter,
+            @Valid JobFilterRequest filter,
             Pageable pageable) {
 
         return jobService.filterJobs(filter, pageable);
