@@ -1,15 +1,30 @@
 package com.jobsphere.auth.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.jobsphere.auth.dto.RegisterRequest;
+import com.jobsphere.auth.service.AuthService;
+import com.jobsphere.user.dto.UserResponse;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
     @GetMapping("/test")
     public String test() {
         return "Auth public endpoint is working";
+    }
+
+    @PostMapping("/register")
+    public UserResponse register(
+            @Valid @RequestBody RegisterRequest request) {
+
+        return authService.register(request);
     }
 }
