@@ -1,5 +1,6 @@
 package com.jobsphere.auth.controller;
 
+import com.jobsphere.auth.dto.LoginRequest;
 import com.jobsphere.auth.dto.RegisterRequest;
 import com.jobsphere.auth.service.AuthService;
 import com.jobsphere.user.dto.UserResponse;
@@ -26,5 +27,13 @@ public class AuthController {
             @Valid @RequestBody RegisterRequest request) {
 
         return authService.register(request);
+    }
+
+    @PostMapping("/login")
+    public String login(@Valid @RequestBody LoginRequest request) {
+
+        authService.login(request);
+
+        return "Login successful";
     }
 }
