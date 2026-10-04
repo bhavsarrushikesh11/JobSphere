@@ -10,3 +10,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+jwt:
+  secret: your-super-secret-key-change-this-later
+  expiration: 86400000

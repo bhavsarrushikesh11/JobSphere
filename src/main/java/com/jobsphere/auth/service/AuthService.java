@@ -13,6 +13,8 @@ import com.jobsphere.user.entity.User;
 import com.jobsphere.user.enums.UserRole;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import com.jobsphere.auth.dto.AuthResponse;
+import com.jobsphere.security.JwtService;
 
 @Service
 public class AuthService {
@@ -20,14 +22,17 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
     public AuthService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
-                       AuthenticationManager authenticationManager) {
+                       AuthenticationManager authenticationManager,
+                       JwtService jwtService) {
 
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
     public UserResponse register(RegisterRequest request) {
@@ -76,7 +81,7 @@ public class AuthService {
         return response;
     }
 
-    public void login(LoginRequest request) {
+    public AuthResponse login(LoginRequest request) {
 
         Authentication authentication =
                 authenticationManager.authenticate(
@@ -85,5 +90,11 @@ public class AuthService {
                                 request.getPassword()
                         )
                 );
+
+        String token = jwtService.generateToken(
+                authentication.getName()
+        );
+
+        return new AuthResponse(token);
     }
 }

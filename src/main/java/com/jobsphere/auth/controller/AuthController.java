@@ -6,6 +6,8 @@ import com.jobsphere.auth.service.AuthService;
 import com.jobsphere.user.dto.UserResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
+import com.jobsphere.auth.dto.AuthResponse;
+import com.jobsphere.auth.dto.LoginRequest;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -30,10 +32,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid @RequestBody LoginRequest request) {
-
-        authService.login(request);
-
-        return "Login successful";
+    public AuthResponse login(@Valid @RequestBody LoginRequest request) {
+        return authService.login(request);
     }
 }
