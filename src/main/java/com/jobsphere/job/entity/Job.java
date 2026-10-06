@@ -3,6 +3,7 @@ package com.jobsphere.job.entity;
 import com.jobsphere.company.entity.Company;
 import com.jobsphere.job.enums.JobStatus;
 import com.jobsphere.job.enums.JobType;
+import com.jobsphere.user.entity.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -46,6 +47,9 @@ public class Job {
 
     @ManyToOne
     private Company company;
+
+    @ManyToOne
+    private User createdBy;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -197,5 +201,13 @@ public class Job {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 }

@@ -85,4 +85,18 @@ public class GlobalExceptionHandler {
                 request.getRequestURI()
         );
     }
+
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleForbiddenException(
+            ForbiddenException exception,
+            HttpServletRequest request) {
+
+        return new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.FORBIDDEN.value(),
+                exception.getMessage(),
+                request.getRequestURI()
+        );
+    }
 }

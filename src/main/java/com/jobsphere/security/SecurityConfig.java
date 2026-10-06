@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 public class SecurityConfig {
@@ -30,6 +31,16 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/api/v1/jobs")
+                        .hasAnyRole("RECRUITER", "ADMIN")
+
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/jobs/**")
+                        .hasAnyRole("RECRUITER", "ADMIN")
+
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/jobs/**")
+                        .hasAnyRole("RECRUITER", "ADMIN")
+
                         .anyRequest().authenticated()
                 )
 
